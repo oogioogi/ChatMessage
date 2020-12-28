@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatInputAccessoryView" customModule="ChatMessage" customModuleProvider="target">
+            <connections>
+                <outlet property="chatTextView" destination="OZY-SY-lJS" id="yva-NL-fCr"/>
+                <outlet property="sendButton" destination="89G-bJ-vvb" id="ltV-Cg-9bU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Fzt-bC-cW5">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="166"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="메세지를 여기에 넣으세요" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OZY-SY-lJS">
+                    <rect key="frame" x="10" y="10" width="334" height="146"/>
+                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" systemColor="labelColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="89G-bJ-vvb">
+                    <rect key="frame" x="354" y="63" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="A0g-xD-j3R"/>
+                        <constraint firstAttribute="width" constant="40" id="k0U-7e-g0r"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="send_icon"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Tzh-vb-9Kw"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="89G-bJ-vvb" firstAttribute="leading" secondItem="OZY-SY-lJS" secondAttribute="trailing" constant="10" id="LK3-9y-4oz"/>
+                <constraint firstItem="Tzh-vb-9Kw" firstAttribute="trailing" secondItem="89G-bJ-vvb" secondAttribute="trailing" constant="20" id="N4c-NC-QKi"/>
+                <constraint firstItem="89G-bJ-vvb" firstAttribute="centerY" secondItem="OZY-SY-lJS" secondAttribute="centerY" id="Qye-sr-KOB"/>
+                <constraint firstItem="Tzh-vb-9Kw" firstAttribute="bottom" secondItem="OZY-SY-lJS" secondAttribute="bottom" constant="10" id="Tf3-MO-qlr"/>
+                <constraint firstItem="OZY-SY-lJS" firstAttribute="leading" secondItem="Tzh-vb-9Kw" secondAttribute="leading" constant="10" id="cpe-7d-cJ5"/>
+                <constraint firstItem="OZY-SY-lJS" firstAttribute="top" secondItem="Fzt-bC-cW5" secondAttribute="top" constant="10" id="e94-V1-vuD"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-59.420289855072468" y="-105.80357142857143"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="send_icon" width="256" height="256"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
