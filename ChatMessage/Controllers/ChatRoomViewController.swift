@@ -10,10 +10,12 @@ import UIKit
 class ChatRoomViewController: UIViewController {
 
     private let cellId = "cellId"
+    private var message = [String]()
     
-    private var chatInputAccessoryView: ChatInputAccessoryView = {
+    private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
         view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 100)
+        view.delegate = self
         return view
     }()
     
@@ -42,6 +44,17 @@ class ChatRoomViewController: UIViewController {
     
 }
 
+extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
+    
+    func tappedSendButton(text: String) {
+        message.append(text)
+        chatInputAccessoryView.removeText()
+        chatRoomTableView.reloadData()
+        //print(" ChatInputAccessoryViewDelegate text: ", text)
+    }
+    
+}
+
 extension ChatRoomViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -50,11 +63,12 @@ extension ChatRoomViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return message.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        guard let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ChatRoomTableViewCell else { return UITableViewCell() }
+        cell.messageText = message[indexPath.row]
         return cell
     }
     
