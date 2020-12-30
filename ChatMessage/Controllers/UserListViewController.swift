@@ -15,17 +15,50 @@ class UserListViewController: UIViewController {
     
     private let cellId = "cellId"
     private var users = [User]()
+    private var selectedUser: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
         userListTableView.delegate = self
         userListTableView.dataSource = self
-        startChatButton.layer.cornerRadius = 10
+        startChatButton.layer.cornerRadius = 15
+        startChatButton.isEnabled = false
+        startChatButton.alpha = 0.5
+        
+        startChatButton.addTarget(self, action: #selector(tappedStartChatButton), for: .touchUpInside)
         
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         
         fetchUserInfoFromFirestore()
+    }
+    
+    @IBAction func tappedCloseButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @objc private func tappedStartChatButton() {
+        print("tappedStartChatButton : ")
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let partnerUid = self.selectedUser?.uid else { return }
+        
+        let members = [uid, partnerUid]
+        let docData:[String : Any] = [
+            "members": members,
+            "leastMessageId": "",
+            "creatAt": Timestamp()
+        ]
+        
+        Firestore.firestore().collection("chatRooms").addDocument(data: docData) { (error) in
+            
+            if let error = error {
+                print("chatRooms을 생성 할수 없습니다! \(error)")
+                return
+            }
+            
+            print("chatRooms을 생성에 성공 했습니다")
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     private func fetchUserInfoFromFirestore() {
@@ -40,9 +73,9 @@ class UserListViewController: UIViewController {
             snapshots?.documents.forEach({ (snapshot) in
                 
                 let dic = snapshot.data()
-                
                 let user = User.init(dic: dic) // User 클래스 생성
                 
+                user.uid = snapshot.documentID
                 guard let uid = Auth.auth().currentUser?.uid else { return }
                 
                 if uid == snapshot.documentID {
@@ -77,6 +110,16 @@ extension UserListViewController: UITableViewDataSource {
 }
 
 extension UserListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        startChatButton.isEnabled = true
+        startChatButton.alpha = 1.0
+        let user = users[indexPath.row]
+        self.selectedUser = user
+        
+        print("selected user : \(selectedUser?.username)")
+    }
     
 }
 

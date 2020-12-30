@@ -12,6 +12,9 @@ class ChatListViewController: UIViewController {
 
     @IBOutlet weak var chatListTableView: UITableView!
     
+    private let cellId = "cellId"
+    private var chatRooms = [ChatRoom]()
+    
     private var user: User? {
         didSet{
             navigationItem.title = user?.username
@@ -26,6 +29,50 @@ class ChatListViewController: UIViewController {
         fetchLoginUserInfo()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchChatRoomsInforFirestore()
+    }
+    
+    private func fetchChatRoomsInforFirestore() {
+        Firestore.firestore().collection("chatRooms").getDocuments { (snapshots, error) in
+            
+            if let error = error {
+                print("chatRooms을 불러 올수 없습니다! \(error)")
+                return
+            }
+            print("chatRooms을 불러오는데 성공 했습니다")
+            
+            snapshots?.documents.forEach({ (snapshot) in
+                let dic = snapshot.data()
+                let chatRoom = ChatRoom(dic: dic)
+                
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                chatRoom.members.forEach { (memberUid) in
+                    if memberUid != uid {
+                        Firestore.firestore().collection("user").document().getDocument { (snapshot, error) in
+                            if let error = error {
+                                print("chatRooms을 불러 올수 없습니다! \(error)")
+                                return
+                            }
+                            print("chatRooms을 불러오는데 성공 했습니다")
+                            
+                            guard let snapshot = snapshot else { return }
+                            guard let dic = snapshot.data() else { return }
+                            let user = User(dic: dic)
+                            user.uid = snapshot.documentID
+                            
+                            chatRoom.partnerUser = user
+                            self.chatRooms.append(chatRoom)
+                            print(" chatRooms count: ", self.chatRooms.count )
+                            self.chatListTableView.reloadData()
+                        }
+                    }
+                }
+            })
+        }
+    }
+    
     // 최신 차트 스토리 보드 생성
     @objc private func tappedNavigationRightButton() {
         //print("tappedNavigationRightButton : ")
@@ -33,6 +80,7 @@ class ChatListViewController: UIViewController {
         let userListViewcontroller = storyboard.instantiateViewController(identifier: "UserListViewController")
         
         let navigationViewController = UINavigationController(rootViewController: userListViewcontroller)
+        navigationViewController.modalPresentationStyle = .fullScreen
         self.present(navigationViewController, animated: true, completion: nil)
     }
     
@@ -120,16 +168,36 @@ extension ChatListViewController: UITableViewDelegate {
 
 class ChatListTableViewCell: UITableViewCell {
     
-    var user: User? {
+//    var user: User? {
+//        didSet{
+//
+//            if let user = user {
+//                self.partnerLabel.text = user.username
+//                //self.userImageView.image = UIImage(named: String(describing: user.profileImageUrl))
+//                print("user Image Name : \(String(describing: user.profileImageUrl))")
+//                self.dateLabel.text = dateformatterForDateLabel(date: user.creatAt.dateValue())
+//                self.lastedMessageLabel.text = user.email
+//            }
+//
+//        }
+//    }
+    
+    var chatRoom: ChatRoom? {
         didSet{
             
-            if let user = user {
-                self.partnerLabel.text = user.username
-                //self.userImageView.image = UIImage(named: String(describing: user.profileImageUrl))
-                print("user Image Name : \(String(describing: user.profileImageUrl))")
-                self.dateLabel.text = dateformatterForDateLabel(date: user.creatAt.dateValue())
-                self.lastedMessageLabel.text = user.email
+            if let chatRoom = chatRoom {
+                self.partnerLabel.text = chatRoom.partnerUser?.username
+                
+                do {
+                    let url = URL(string: chatRoom.partnerUser?.profileImageUrl ?? "")
+                    let data = try Data(contentsOf: url!)
+                    self.userImageView.image = UIImage(data: data)
+                    
+                } catch let error {
+                    print("error :", error.localizedDescription )
+                }
             }
+
 
         }
     }
