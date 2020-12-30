@@ -11,6 +11,7 @@ import Firebase
 class UserListViewController: UIViewController {
     
     @IBOutlet weak var userListTableView: UITableView!
+    @IBOutlet weak var startChatButton: UIButton!
     
     private let cellId = "cellId"
     private var users = [User]()
@@ -20,12 +21,9 @@ class UserListViewController: UIViewController {
     
         userListTableView.delegate = self
         userListTableView.dataSource = self
+        startChatButton.layer.cornerRadius = 10
         
-        //fetchUserInfoFromFirestore()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         
         fetchUserInfoFromFirestore()
     }
@@ -45,6 +43,11 @@ class UserListViewController: UIViewController {
                 
                 let user = User.init(dic: dic) // User 클래스 생성
                 
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                
+                if uid == snapshot.documentID {
+                    return
+                }
                 //self.users.insert(user, at: 0) // users 배열에 추가
                 self.users.append(user)
                 
@@ -101,6 +104,7 @@ class UserListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        userImageView.layer.cornerRadius = 25
 
     }
     

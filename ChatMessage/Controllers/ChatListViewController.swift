@@ -12,43 +12,18 @@ class ChatListViewController: UIViewController {
 
     @IBOutlet weak var chatListTableView: UITableView!
     
-    private var users = [User]() // 클래스 User를 배열 생성
+    private var user: User? {
+        didSet{
+            navigationItem.title = user?.username
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        chatListTableView.dataSource = self
-        chatListTableView.delegate = self
         
-        // 네비게이션 바 배경 색
-        navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
-        navigationItem.title = "Title"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor:UIColor.white]
-
-        // 네비게이션 바 버턴 오른쪽에 생성
-        let rightBarButton = UIBarButtonItem(title: "최신 차트", style: .plain, target: self, action: #selector(tappedNavigationRightButton))
-        navigationItem.rightBarButtonItem = rightBarButton
-        navigationItem.rightBarButtonItem?.tintColor = .white
-        
-        
-        //
-        if Auth.auth().currentUser?.uid == nil {
-            // MARK: - SignUp View Controller
-            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
-            let signUpviewcontroller = storyboard.instantiateViewController(identifier: "SignUpViewController")
-            
-            signUpviewcontroller.modalPresentationStyle = .fullScreen
-            self.present(signUpviewcontroller, animated: true, completion: nil)
-        }
-        
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // 파이어 스토어에서 대화방 가져와서 리스트 테이블에 뿌려줌!
-        fetchUserInfoFromFirestore()
+        setupViews()
+        confirmLoggedInUser()
+        fetchLoginUserInfo()
     }
     
     // 최신 차트 스토리 보드 생성
@@ -61,33 +36,48 @@ class ChatListViewController: UIViewController {
         self.present(navigationViewController, animated: true, completion: nil)
     }
     
+    private func setupViews() {
+        chatListTableView.dataSource = self
+        chatListTableView.delegate = self
+         
+        // 네비게이션 바 배경 색
+        navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
+        navigationItem.title = "Title"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor:UIColor.white]
+
+        // 네비게이션 바 버턴 오른쪽에 생성
+        let rightBarButton = UIBarButtonItem(title: "체팅 목록", style: .plain, target: self, action: #selector(tappedNavigationRightButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
     
-    private func fetchUserInfoFromFirestore() {
-        
-        Firestore.firestore().collection("user").getDocuments { [self] (snapshots, error) in
+    private func confirmLoggedInUser() {
+        //
+        if Auth.auth().currentUser?.uid == nil {
+            // MARK: - SignUp View Controller
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+            let signUpviewcontroller = storyboard.instantiateViewController(identifier: "SignUpViewController")
             
+            signUpviewcontroller.modalPresentationStyle = .fullScreen
+            self.present(signUpviewcontroller, animated: true, completion: nil)
+        }
+    }
+    
+    
+    private func fetchLoginUserInfo() {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("user").document(uid).getDocument { (snapshot, error) in
             if let error = error {
                 print("파이어 스토어의 유저 접속을 할수 없습니다 : \(error)")
                 return
             }
+            guard let snapshot = snapshot, let dic = snapshot.data() else { return }
             
-            snapshots?.documents.forEach({ (snapshot) in
-                
-                let dic = snapshot.data()
-                
-                let user = User.init(dic: dic) // User 클래스 생성
-                
-                //self.users.insert(user, at: 0) // users 배열에 추가
-                self.users.append(user)
-                
-                self.chatListTableView.reloadData()
-                
-//                self.users.forEach { (user) in
-//                    print("username: \(user.username)")
-//                }
-                
-                //print("파이어 스토어 콜렉션 유저 도큐멘트를 다운로드 합니다: data count = \(dic.count) :: ", dic)
-            })
+            let user = User(dic: dic)
+            self.user = user
+            
+            self.chatListTableView.reloadData()
         }
     }
     /*
@@ -109,12 +99,12 @@ extension ChatListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = chatListTableView.dequeueReusableCell(withIdentifier: "ChatListTableViewCell", for: indexPath) as? ChatListTableViewCell else { return UITableViewCell()}
-        cell.user = users[indexPath.row]
+        //cell.user = user
         return cell
     }
     
