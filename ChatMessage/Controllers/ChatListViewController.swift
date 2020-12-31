@@ -13,7 +13,7 @@ class ChatListViewController: UIViewController {
     @IBOutlet weak var chatListTableView: UITableView!
     
     private let cellId = "cellId"
-    private var chatRooms = [ChatRoom]()
+    private var chatRoooms = [ChatRoom]()
     
     private var user: User? {
         didSet{
@@ -38,33 +38,35 @@ class ChatListViewController: UIViewController {
         Firestore.firestore().collection("chatRooms").getDocuments { (snapshots, error) in
             
             if let error = error {
-                print("chatRooms을 불러 올수 없습니다! \(error)")
+                print("chatRooms의 정보를 취득하는데 실폐 했습니다. \(error)")
                 return
             }
-            print("chatRooms을 불러오는데 성공 했습니다")
+            print("chatRooms을 정보를 취득하는데 성공 했습니다: ")
             
             snapshots?.documents.forEach({ (snapshot) in
                 let dic = snapshot.data()
                 let chatRoom = ChatRoom(dic: dic)
                 
+                print("dic count : \(dic.count),  dic : \(dic)")
+                
                 guard let uid = Auth.auth().currentUser?.uid else { return }
                 chatRoom.members.forEach { (memberUid) in
+                    
                     if memberUid != uid {
-                        Firestore.firestore().collection("user").document().getDocument { (snapshot, error) in
+                        Firestore.firestore().collection("user").document(memberUid).getDocument { (snapshot, error) in
                             if let error = error {
-                                print("chatRooms을 불러 올수 없습니다! \(error)")
+                                print("user의 정보를 취득하는데 실폐 했습니다 \(error)")
                                 return
                             }
-                            print("chatRooms을 불러오는데 성공 했습니다")
-                            
+    
                             guard let snapshot = snapshot else { return }
                             guard let dic = snapshot.data() else { return }
+                            
                             let user = User(dic: dic)
                             user.uid = snapshot.documentID
-                            
                             chatRoom.partnerUser = user
-                            self.chatRooms.append(chatRoom)
-                            print(" chatRooms count: ", self.chatRooms.count )
+                            self.chatRoooms.append(chatRoom) //print(" chatRooms count: ", self.chatRoooms.count )
+                            
                             self.chatListTableView.reloadData()
                         }
                     }
@@ -85,8 +87,8 @@ class ChatListViewController: UIViewController {
     }
     
     private func setupViews() {
-        chatListTableView.dataSource = self
-        chatListTableView.delegate = self
+        self.chatListTableView.dataSource = self
+        self.chatListTableView.delegate = self
          
         // 네비게이션 바 배경 색
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
@@ -94,7 +96,7 @@ class ChatListViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor:UIColor.white]
 
         // 네비게이션 바 버턴 오른쪽에 생성
-        let rightBarButton = UIBarButtonItem(title: "체팅 목록", style: .plain, target: self, action: #selector(tappedNavigationRightButton))
+        let rightBarButton = UIBarButtonItem(title: "채팅목록", style: .plain, target: self, action: #selector(tappedNavigationRightButton))
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.rightBarButtonItem?.tintColor = .white
     }
@@ -104,7 +106,7 @@ class ChatListViewController: UIViewController {
         if Auth.auth().currentUser?.uid == nil {
             // MARK: - SignUp View Controller
             let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
-            let signUpviewcontroller = storyboard.instantiateViewController(identifier: "SignUpViewController")
+            let signUpviewcontroller = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
             
             signUpviewcontroller.modalPresentationStyle = .fullScreen
             self.present(signUpviewcontroller, animated: true, completion: nil)
@@ -125,7 +127,7 @@ class ChatListViewController: UIViewController {
             let user = User(dic: dic)
             self.user = user
             
-            self.chatListTableView.reloadData()
+            //self.chatListTableView.reloadData()
         }
     }
     /*
@@ -147,12 +149,12 @@ extension ChatListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return chatRoooms.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = chatListTableView.dequeueReusableCell(withIdentifier: "ChatListTableViewCell", for: indexPath) as? ChatListTableViewCell else { return UITableViewCell()}
-        //cell.user = user
+        cell.chatRoom = chatRoooms[indexPath.row]
         return cell
     }
     
@@ -187,7 +189,7 @@ class ChatListTableViewCell: UITableViewCell {
             
             if let chatRoom = chatRoom {
                 self.partnerLabel.text = chatRoom.partnerUser?.username
-                
+                self.dateLabel.text = dateformatterForDateLabel(date: chatRoom.creatAt.dateValue())
                 do {
                     let url = URL(string: chatRoom.partnerUser?.profileImageUrl ?? "")
                     let data = try Data(contentsOf: url!)
@@ -221,7 +223,7 @@ class ChatListTableViewCell: UITableViewCell {
     private func dateformatterForDateLabel(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
-        formatter.timeStyle = .short
+        formatter.timeStyle = .none
         formatter.locale = Locale(identifier: "Ko-Kr")
         return formatter.string(from: date)
     }

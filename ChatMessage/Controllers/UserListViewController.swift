@@ -55,9 +55,8 @@ class UserListViewController: UIViewController {
                 print("chatRooms을 생성 할수 없습니다! \(error)")
                 return
             }
-            
-            print("chatRooms을 생성에 성공 했습니다")
             self.dismiss(animated: true, completion: nil)
+            print("chatRooms을 생성에 성공 했습니다")
         }
     }
     
@@ -86,7 +85,7 @@ class UserListViewController: UIViewController {
                 
                 self.userListTableView.reloadData()
                 
-                //print("파이어 스토어 콜렉션 유저 도큐멘트를 다운로드 합니다: data count = \(dic.count) :: ", dic)
+                print("파이어 스토어 콜렉션 유저 도큐멘트를 다운로드 합니다: data count = \(dic.count) :: ", dic)
             })
         }
     }

@@ -10,15 +10,15 @@ import Firebase
 
 class ChatRoom {
     
-    let leastMessageId: String
-    let members: String
+    let latestMessageId: String
+    let members: [String] // ??
     let creatAt: Timestamp
     
     var partnerUser: User?
     
-    init(dic:[String: Any] ) {
-        self.leastMessageId = dic["leastMessageId"] as? String ?? ""
-        self.members = dic["members"] as? String ?? ""
+    init(dic: [String: Any] ) {
+        self.latestMessageId = dic["latestMessageId"] as? String ?? ""
+        self.members = dic["members"] as? [String] ?? [String]()
         self.creatAt = dic["creatAt"] as? Timestamp ?? Timestamp()
     }
 }

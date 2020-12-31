@@ -140,7 +140,6 @@
 				8627E813259C2A28008FF43C /* Models */,
 				8637B57E259944AC007E2626 /* Extensions */,
 				8637B57D2599448B007E2626 /* CellsAndViews */,
-				8637B57C2599444B007E2626 /* Nibs */,
 				863C66F925989ECA00FBBC9D /* StoryBoards */,
 				863C66FA25989ED900FBBC9D /* Controllers */,
 				863C66DA25988E8700FBBC9D /* SceneDelegate.swift */,
@@ -179,6 +178,7 @@
 		877D4CCF045BCFDE7036EC44 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8637B57C2599444B007E2626 /* Nibs */,
 				EEC6965CCB9102F2210D49B8 /* Pods_ChatMessage.framework */,
 			);
 			name = Frameworks;
