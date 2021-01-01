@@ -20,6 +20,7 @@ class UserListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        userListTableView.tableFooterView = UIView()
         userListTableView.delegate = self
         userListTableView.dataSource = self
         startChatButton.layer.cornerRadius = 15
@@ -33,9 +34,6 @@ class UserListViewController: UIViewController {
         fetchUserInfoFromFirestore()
     }
     
-    @IBAction func tappedCloseButton(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
     @objc private func tappedStartChatButton() {
         print("tappedStartChatButton : ")
         
@@ -146,7 +144,7 @@ class UserListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        userImageView.layer.cornerRadius = 25
+        userImageView.layer.cornerRadius = 32.5
 
     }
     

@@ -22,7 +22,17 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    
+    private func setupViews() {
         profileImageMainButton.layer.cornerRadius = 85
         profileImageMainButton.layer.borderWidth = 1
         profileImageMainButton.layer.borderColor = UIColor.rgb(red: 240, green: 240, blue: 240).cgColor
@@ -38,6 +48,15 @@ class SignUpViewController: UIViewController {
         registorButton.isEnabled = false
         registorButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
         
+        alreadyHaveAccountButton.addTarget(self, action: #selector(tappedAlreadyHaveButton), for: .touchUpInside)
+    }
+    
+    @objc private func tappedAlreadyHaveButton() {
+        
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
+
+        self.navigationController?.pushViewController(loginViewController, animated: true)
     }
     
     @objc private func tappedProfileImagebutton() {

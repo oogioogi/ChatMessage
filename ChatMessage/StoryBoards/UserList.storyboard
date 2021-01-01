@@ -36,22 +36,22 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellId" id="VZ8-r4-TC4" customClass="UserListTableViewCell" customModule="ChatMessage" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="70"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellId" rowHeight="80" id="VZ8-r4-TC4" customClass="UserListTableViewCell" customModule="ChatMessage" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VZ8-r4-TC4" id="uLb-JA-tBZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ERQ-jr-yl5">
-                                                    <rect key="frame" x="30" y="10" width="50" height="50"/>
+                                                    <rect key="frame" x="30" y="7.5" width="65" height="65"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="bsl-pN-Jwl"/>
+                                                        <constraint firstAttribute="width" constant="65" id="bsl-pN-Jwl"/>
                                                         <constraint firstAttribute="width" secondItem="ERQ-jr-yl5" secondAttribute="height" multiplier="1:1" id="pDl-PH-HJg"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="국화 꽃" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8E-bg-VdW">
-                                                    <rect key="frame" x="90" y="24.5" width="48.5" height="21"/>
+                                                    <rect key="frame" x="105" y="29.5" width="48.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -82,12 +82,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Psq-2O-kIW">
-                        <barButtonItem key="leftBarButtonItem" title="뒤로가기" id="wsj-bX-yxw">
-                            <connections>
-                                <action selector="tappedCloseButton:" destination="m2z-7K-uhE" id="KHt-V5-Wgy"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="SE8-TS-rIE">
+                        <barButtonItem key="rightBarButtonItem" id="SE8-TS-rIE">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Kqt-ww-C4J">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

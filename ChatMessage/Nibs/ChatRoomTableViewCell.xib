@@ -23,7 +23,7 @@
                             <constraint firstAttribute="width" secondItem="YOd-Wi-fUu" secondAttribute="height" multiplier="1:1" id="YIS-Qr-cWZ"/>
                         </constraints>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" minimumZoomScale="0.0" editable="NO" text="우리 오늘 저녁에 맥주 한잔 어때??" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V6C-vw-fN3">
+                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" minimumZoomScale="0.0" editable="NO" text="우리 오늘 저녁에 맥주 한잔 어때??" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V6C-vw-fN3">
                         <rect key="frame" x="85" y="25" width="220" height="100"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -39,21 +39,45 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lyb-E3-jeG">
+                        <rect key="frame" x="184" y="25" width="220" height="100"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="220" id="f5O-Zc-nol"/>
+                        </constraints>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctD-Ay-bhv">
+                        <rect key="frame" x="142.5" y="105.5" width="31.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="lyb-E3-jeG" firstAttribute="top" secondItem="76z-YX-5QW" secondAttribute="top" constant="25" id="3CW-6O-R7q"/>
                     <constraint firstItem="V6C-vw-fN3" firstAttribute="top" secondItem="76z-YX-5QW" secondAttribute="top" constant="25" id="D66-LA-7Ga"/>
                     <constraint firstItem="YOd-Wi-fUu" firstAttribute="leading" secondItem="76z-YX-5QW" secondAttribute="leading" constant="15" id="KsH-xO-OfL"/>
                     <constraint firstItem="YOd-Wi-fUu" firstAttribute="centerY" secondItem="76z-YX-5QW" secondAttribute="centerY" id="UF4-AD-jd6"/>
+                    <constraint firstAttribute="bottom" secondItem="lyb-E3-jeG" secondAttribute="bottom" constant="25" id="UWz-EM-DGq"/>
                     <constraint firstItem="V6C-vw-fN3" firstAttribute="leading" secondItem="YOd-Wi-fUu" secondAttribute="trailing" constant="10" id="Xeg-hn-3lz"/>
                     <constraint firstItem="V6C-vw-fN3" firstAttribute="bottomMargin" secondItem="Nfo-X9-oyu" secondAttribute="bottom" constant="3" id="agT-S1-kl8"/>
                     <constraint firstItem="Nfo-X9-oyu" firstAttribute="leading" secondItem="V6C-vw-fN3" secondAttribute="trailing" constant="10" id="bL3-K1-7WZ"/>
+                    <constraint firstAttribute="trailing" secondItem="lyb-E3-jeG" secondAttribute="trailing" constant="10" id="i91-ry-EYH"/>
+                    <constraint firstItem="lyb-E3-jeG" firstAttribute="leading" secondItem="ctD-Ay-bhv" secondAttribute="trailing" constant="10" id="imz-br-cof"/>
                     <constraint firstAttribute="bottom" secondItem="V6C-vw-fN3" secondAttribute="bottom" constant="25" id="iyE-fN-FDy"/>
+                    <constraint firstAttribute="bottom" secondItem="ctD-Ay-bhv" secondAttribute="bottom" constant="30" id="uL6-vN-tqt"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="dateLabel" destination="Nfo-X9-oyu" id="Fu4-HJ-DmI"/>
-                <outlet property="messageTextView" destination="V6C-vw-fN3" id="4du-fh-bAb"/>
-                <outlet property="messageTextViewWidthConstraint" destination="FyD-hE-bar" id="byV-cu-1h2"/>
+                <outlet property="myDateLabel" destination="ctD-Ay-bhv" id="SfR-T1-T7c"/>
+                <outlet property="myMessageTextViewWidthConstraint" destination="f5O-Zc-nol" id="G9c-Y3-MZ0"/>
+                <outlet property="myMessagetextView" destination="lyb-E3-jeG" id="eSC-ys-ozf"/>
+                <outlet property="partnerDateLabel" destination="Nfo-X9-oyu" id="Fu4-HJ-DmI"/>
+                <outlet property="partnerMessageTextView" destination="V6C-vw-fN3" id="4du-fh-bAb"/>
+                <outlet property="partnerMessageTextViewWidthConstraint" destination="FyD-hE-bar" id="byV-cu-1h2"/>
                 <outlet property="userImageView" destination="YOd-Wi-fUu" id="zS6-hs-m4e"/>
             </connections>
             <point key="canvasLocation" x="-183" y="-5"/>
@@ -66,6 +90,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

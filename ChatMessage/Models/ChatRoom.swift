@@ -15,6 +15,8 @@ class ChatRoom {
     let creatAt: Timestamp
     
     var partnerUser: User?
+    var lastedMessage: Messages?
+    var documentId: String?
     
     init(dic: [String: Any] ) {
         self.latestMessageId = dic["latestMessageId"] as? String ?? ""
