@@ -18,6 +18,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var usernameTextfield: UITextField!
     @IBOutlet weak var registorButton: UIButton!
     @IBOutlet weak var alreadyHaveAccountButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     override func viewDidLoad() {
@@ -70,8 +71,10 @@ class SignUpViewController: UIViewController {
     
     @objc private func tappedRegistorButton() {
         
-        guard let image = profileImageMainButton.imageView?.image else { return } // 포로필 이미지를 파이어 베이스 스토리지에 저장
-        guard let uploadImage = image.jpegData(compressionQuality: 0.3) else { return } // 이미지를 JEPG로 변형
+        let image = profileImageMainButton.imageView?.image ?? UIImage(named: "face-mask") // 포로필 이미지를 파이어 베이스 스토리지에 저장
+        guard let uploadImage = image?.jpegData(compressionQuality: 0.3) else { return } // 이미지를 JEPG로 변형
+        
+        self.activityIndicator.startAnimating()
         
         let filename = NSUUID().uuidString // 임이의 파일 이름을 생성
         let storageRef = Storage.storage().reference().child("profile_image").child(filename) // "profile_image" 루트 디렉토리 생성후, 임이의 파일 디렉토리 생성
@@ -79,6 +82,7 @@ class SignUpViewController: UIViewController {
         storageRef.putData(uploadImage, metadata: nil) { (matadata, error) in       // 이미지 업 로드
             if let error = error {
                 print("파이어 베이스 스토리지에 접속을 할수 없습니다!!: \(error)")
+                self.activityIndicator.stopAnimating()
                 return
             }
             
@@ -87,6 +91,7 @@ class SignUpViewController: UIViewController {
             storageRef.downloadURL { (url, error) in
                 if let error = error {
                     print("파이어 스토리지오 부터 다운 로드를 할수 없습니다! : \(error)")
+                    self.activityIndicator.stopAnimating()
                     return
                 }
                 guard let urlString = url?.absoluteString else { return }
@@ -106,6 +111,7 @@ class SignUpViewController: UIViewController {
             
             if let error = error {
                 print("레지스트 카운트 접속 실패 : ", error)
+                self.activityIndicator.stopAnimating()
                 return
             }
             print(" 레지스트 카운트 접속 성공 ")
@@ -123,13 +129,19 @@ class SignUpViewController: UIViewController {
                 
                 if let error = error {
                     print("클라우드 파이어 베이스 콜렉션 유저 생성 실패! :", error)
+                    self.activityIndicator.stopAnimating()
                 }
                 print("클라우드 파이어 베이스 콜렉션 유저 생성 성공!")
+                
+                self.activityIndicator.stopAnimating()
                 self.dismiss(animated: true, completion: nil)
             }
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
 
 extension SignUpViewController: UITextFieldDelegate {

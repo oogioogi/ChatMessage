@@ -49,7 +49,7 @@
                                                 <rect key="frame" x="0.0" y="20.5" width="300" height="49.5"/>
                                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
@@ -83,10 +83,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="DXA-xW-V5K">
+                                <rect key="frame" x="182" y="451" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="LwW-cO-qC3"/>
+                                    <constraint firstAttribute="height" constant="50" id="XKz-wS-vbH"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y5r-zW-qsq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="DXA-xW-V5K" firstAttribute="centerY" secondItem="PeS-Hj-8wn" secondAttribute="centerY" id="6Fb-WZ-lHp"/>
                             <constraint firstItem="l1Z-LR-Hmq" firstAttribute="top" secondItem="PeS-Hj-8wn" secondAttribute="bottom" constant="40" id="7X8-OU-hIo"/>
                             <constraint firstItem="J69-XZ-8Le" firstAttribute="top" secondItem="mIS-C1-MYF" secondAttribute="bottom" constant="60" id="Qep-aY-0G3"/>
                             <constraint firstItem="mIS-C1-MYF" firstAttribute="centerX" secondItem="tD8-5Q-pj6" secondAttribute="centerX" id="RCp-5c-Lyb"/>
@@ -94,10 +102,12 @@
                             <constraint firstItem="PeS-Hj-8wn" firstAttribute="centerX" secondItem="tD8-5Q-pj6" secondAttribute="centerX" id="ZEo-fa-c6S"/>
                             <constraint firstItem="mIS-C1-MYF" firstAttribute="top" secondItem="y5r-zW-qsq" secondAttribute="top" constant="80" id="aWV-3x-mRB"/>
                             <constraint firstItem="J69-XZ-8Le" firstAttribute="centerX" secondItem="tD8-5Q-pj6" secondAttribute="centerX" id="chP-gW-7wb"/>
+                            <constraint firstItem="DXA-xW-V5K" firstAttribute="centerX" secondItem="PeS-Hj-8wn" secondAttribute="centerX" id="eyE-Ur-1UV"/>
                             <constraint firstItem="l1Z-LR-Hmq" firstAttribute="centerX" secondItem="tD8-5Q-pj6" secondAttribute="centerX" id="t5c-K9-Hdc"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="DXA-xW-V5K" id="cLL-ri-erk"/>
                         <outlet property="dontHaveAccountButton" destination="l1Z-LR-Hmq" id="pvF-yV-xF5"/>
                         <outlet property="emailTextField" destination="Psg-uF-8gT" id="bMT-2m-yPa"/>
                         <outlet property="loginButton" destination="PeS-Hj-8wn" id="loH-S3-Q4i"/>
@@ -106,7 +116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sfi-tL-n1h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-34" y="159"/>
+            <point key="canvasLocation" x="-246" y="131"/>
         </scene>
     </scenes>
     <resources>

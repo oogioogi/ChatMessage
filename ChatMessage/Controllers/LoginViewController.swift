@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var dontHaveAccountButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +32,16 @@ class LoginViewController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
+        self.activityIndicator.startAnimating()
+        
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             
             if let error = error {
                 print("로그인에 실패했습니다! : \(error)")
+                self.activityIndicator.stopAnimating()
                 return
             }
-            
+            self.activityIndicator.stopAnimating()
             print("로그인에 성공 했습니다!.")
             
             let navigation = self.presentingViewController as! UINavigationController
@@ -47,5 +51,9 @@ class LoginViewController: UIViewController {
             
             self.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }

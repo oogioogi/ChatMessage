@@ -243,7 +243,7 @@ class ChatListTableViewCell: UITableViewCell {
         didSet{
             if let chatRoom = chatRoom {
                 self.partnerLabel.text = chatRoom.partnerUser?.username
-                self.dateLabel.text = dateformatterForDateLabel(date: chatRoom.lastedMessage?.creatAt.dateValue() ?? Date())
+                self.dateLabel.text = dateformatterForDateLabel(date: (chatRoom.creatAt.dateValue()))
                 self.lastedMessageLabel.text = chatRoom.lastedMessage?.message
                 do {
                     let url = URL(string: chatRoom.partnerUser?.profileImageUrl ?? "")
